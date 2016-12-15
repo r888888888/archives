@@ -13,3 +13,7 @@ group :production do
   gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
 end
+
+group :development do
+  gem 'foreman'
+end
