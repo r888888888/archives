@@ -49,8 +49,7 @@ class PoolVersion < ActiveRecord::Base
 
     description_changed = previous.nil? || json["description"] != previous.try(:description)
     name_changed = previous.nil? || json["name"] != previous.try(:name)
-
-    x = new(
+    attribs = {
       pool_id: json["pool_id"],
       post_ids: post_ids,
       added_post_ids: added_post_ids,
@@ -66,12 +65,16 @@ class PoolVersion < ActiveRecord::Base
       version: calculate_version(json["pool_id"], updated_at),
       is_active: json["is_active"],
       is_deleted: json["is_deleted"],
-      category: json["category"]
-    )
+      category: json["category"]      
+    }
+
+    x = new(attribs)
     x.id = json["id"] if json["id"]
 
-    if x.mergeable?(previous)
-      previous.update_columns(x.attributes)
+    if old = find_by_id(x.id)
+      old.update_columns(attribs)
+    elsif x.mergeable?(previous)
+      previous.update_columns(attribs)
     else
       x.save
     end
