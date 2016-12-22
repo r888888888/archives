@@ -7,7 +7,8 @@ class PoolVersion < ActiveRecord::Base
     host: ENV["POSTGRES_HOST"],
     database: ENV["POSTGRES_DB"],
     username: ENV["POSTGRES_USER"],
-    password: ENV["POSTGRES_PASSWORD"]
+    password: ENV["POSTGRES_PASSWORD"],
+    pool: 5
   )
 
   def self.find_previous(pool_id, updated_at)
@@ -16,21 +17,6 @@ class PoolVersion < ActiveRecord::Base
 
   def self.calculate_version(pool_id, updated_at)
     1 + PoolVersion.where(pool_id: pool_id).where("updated_at < ?", updated_at).count
-  end
-
-  def self.merge?(version, previous)
-    if version.mergeable?(previous)
-      last_version = versions.last
-
-      if last_version && last_version.updater_ip_addr == CurrentUser.ip_addr && CurrentUser.user.id == last_version.updater_id && last_version.created_at > 1.hour.ago
-        # merge
-        last_version.update_column(:post_ids, post_ids)
-        last_version.update_column(:name, name)
-      else
-        # create
-        versions.create(:post_ids => post_ids, :name => name)
-      end
-    end
   end
 
   def self.create_from_json(json)

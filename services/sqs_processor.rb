@@ -73,6 +73,10 @@ def process_queue(poller, logger)
           logger.info("add pool version json=#{json.inspect}")
           PoolVersion.create_from_json(json)
 
+        when "add post version"
+          logger.info("add post version json=#{json.inspect}")
+          PostVersion.create_from_json(json)
+
         else
           logger.info("unknown command: #{command}")
         end
