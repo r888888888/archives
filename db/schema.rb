@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161214191901) do
+ActiveRecord::Schema.define(version: 20161221234158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,27 @@ ActiveRecord::Schema.define(version: 20161214191901) do
     t.index ["pool_id"], name: "index_pool_versions_on_pool_id", using: :btree
     t.index ["updater_id"], name: "index_pool_versions_on_updater_id", using: :btree
     t.index ["updater_ip_addr"], name: "index_pool_versions_on_updater_ip_addr", using: :btree
+  end
+
+  create_table "post_versions", force: :cascade do |t|
+    t.integer  "post_id",                                   null: false
+    t.text     "tags",                                      null: false
+    t.text     "added_tags",                default: [],    null: false, array: true
+    t.text     "removed_tags",              default: [],    null: false, array: true
+    t.integer  "updater_id"
+    t.string   "updater_ip_addr",                           null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "rating",          limit: 1
+    t.boolean  "rating_changed",            default: false, null: false
+    t.integer  "parent_id"
+    t.boolean  "parent_changed",            default: false, null: false
+    t.text     "source"
+    t.boolean  "source_changed",            default: false, null: false
+    t.integer  "version",                   default: 1,     null: false
+    t.index ["post_id"], name: "index_post_versions_on_post_id", using: :btree
+    t.index ["updated_at"], name: "index_post_versions_on_updated_at", using: :btree
+    t.index ["updater_id"], name: "index_post_versions_on_updater_id", using: :btree
+    t.index ["updater_ip_addr"], name: "index_post_versions_on_updater_ip_addr", using: :btree
   end
 
 end
