@@ -12,6 +12,7 @@ group :production do
 	gem "capistrano"
   gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
+  gem 'whenever'
 end
 
 group :development do
