@@ -18,7 +18,7 @@ Aws.config.update(
 S3 = Aws::S3::Client.new
 
 ## upload postgresql
-bucket = "danbooru-archive-backup"
+bucket = "danbooru-archives-backup"
 
 current_backups = S3.list_objects(bucket: bucket).contents.map {|x| x.key}.select {|x| x =~ /^db-/}.sort.reverse
 

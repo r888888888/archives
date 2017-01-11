@@ -1,6 +1,3 @@
-# config valid only for current version of Capistrano
-lock "3.7.0"
-
 set :application, "archives"
 set :repo_url, "git://github.com/r888888888/archives.git"
 set :deploy_to, "/var/www/archives"
