@@ -5,7 +5,7 @@ Dotenv.load
 
 require 'aws-sdk'
 
-MAX_BACKUPS = 30
+MAX_BACKUPS = 20
 
 Aws.config.update(
   region: ENV["AMAZON_SQS_REGION"],
@@ -18,7 +18,7 @@ Aws.config.update(
 S3 = Aws::S3::Client.new
 
 ## upload postgresql
-bucket = "archive-backup"
+bucket = "danbooru-archive-backup"
 
 current_backups = S3.list_objects(bucket: bucket).contents.map {|x| x.key}.select {|x| x =~ /^db-/}.sort.reverse
 
