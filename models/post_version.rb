@@ -35,7 +35,7 @@ class PostVersion < ActiveRecord::Base
 
     rating_changed = previous.nil? || json["rating"] != previous.try(:rating)
     parent_changed = previous.nil? || json["parent_id"] != previous.try(:parent_id)
-    source_changed = previous.nil? || json["source"] != previous.try(:source=)
+    source_changed = previous.nil? || json["source"] != previous.try(:source)
     attribs = {
       post_id: json["post_id"],
       tags: tags,

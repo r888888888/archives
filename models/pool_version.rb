@@ -24,6 +24,12 @@ class PoolVersion < ActiveRecord::Base
     updated_at = json["updated_at"] ? Time.parse(json["updated_at"]) : created_at
     post_ids = json["post_ids"]
     previous = find_previous(json["pool_id"], updated_at)
+    subject = PoolVersion.new
+
+    if previous && previous.updater_id == json["updater_id"] && updated_at >= 1.hour.ago
+      subject = previous
+      previous = find_previous(json["pool_id"], previous.updated_at)
+    end
 
     if previous
       added_post_ids = post_ids - previous.post_ids
@@ -54,28 +60,11 @@ class PoolVersion < ActiveRecord::Base
       category: json["category"]      
     }
 
-    x = new(attribs)
-    x.id = json["id"] if json["id"]
-
-    if old = find_by_id(x.id)
-      old.update_columns(attribs)
-    elsif x.mergeable?(previous)
-      previous.update_columns(attribs)
-    else
-      x.save
-    end
-  end
-
-  def mergeable?(previous)
-    previous.present? &&
-      updater_id == previous.updater_id &&
-      updated_at > 1.hour.ago && (
-        post_ids != previous.post_ids || 
-        name != previous.name ||
-        description != previous.description ||
-        is_active != previous.is_active ||
-        is_deleted != previous.is_deleted ||
-        category != previous.category
-      )
+    ActiveRecord::Base.record_timestamps = false
+    subject.attributes = attribs
+    subject.id = json["id"] if json["id"]
+    subject.save
+  ensure
+    ActiveRecord::Base.record_timestamps = true
   end
 end
