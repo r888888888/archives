@@ -9,6 +9,7 @@ require "logger"
 require "aws-sdk"
 require "optparse"
 require "pool_version"
+require "post_version"
 
 unless ENV["RUN"]
   Process.daemon
@@ -94,7 +95,11 @@ def process_queue(poller, logger)
         exit(1)
       end
 
-      sleep(60)
+      60.times do
+        sleep 1
+        exit(1) unless $running
+      end
+
       retry
     end
   end

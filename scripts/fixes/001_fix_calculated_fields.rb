@@ -5,13 +5,15 @@ require './models/pool_version'
 
 ActiveRecord::Base.record_timestamps = false
 
-candidates = PoolVersion.where("updated_at > '2017-01-01'").pluck(:pool_id)
+candidates = PoolVersion.where("updated_at > '2017-01-01'").pluck(:pool_id).uniq
 candidates.each do |pool_id|
   v = 1
   PoolVersion.where(pool_id: pool_id).order("updated_at").each do |version|
     previous = PoolVersion.find_previous(pool_id, version.updated_at)
     version.version = v
     if previous
+      version.description_changed = version.description != previous.description
+      version.name_changed = version.name != previous.name
       version.added_post_ids = version.post_ids - previous.post_ids
       version.removed_post_ids = previous.post_ids - version.post_ids
     else
