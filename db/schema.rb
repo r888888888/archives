@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161221234158) do
+ActiveRecord::Schema.define(version: 20170119015012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20161221234158) do
     t.text     "added_tags",                default: [],    null: false, array: true
     t.text     "removed_tags",              default: [],    null: false, array: true
     t.integer  "updater_id"
-    t.string   "updater_ip_addr",                           null: false
+    t.inet     "updater_ip_addr",                           null: false
     t.datetime "updated_at",                                null: false
     t.string   "rating",          limit: 1
     t.boolean  "rating_changed",            default: false, null: false
