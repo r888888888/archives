@@ -26,10 +26,10 @@ class PoolVersion < ActiveRecord::Base
     previous = find_previous(json["pool_id"], updated_at)
     subject = PoolVersion.new
 
-    if previous && previous.updater_id == json["updater_id"] && updated_at >= 1.hour.ago
-      subject = previous
-      previous = find_previous(json["pool_id"], previous.updated_at)
-    end
+    # if previous && previous.updater_id == json["updater_id"] && updated_at >= 1.hour.ago
+    #   subject = previous
+    #   previous = find_previous(json["pool_id"], previous.updated_at)
+    # end
 
     if previous
       added_post_ids = post_ids - previous.post_ids
@@ -38,6 +38,9 @@ class PoolVersion < ActiveRecord::Base
       added_post_ids = post_ids
       removed_post_ids = []
     end
+
+    puts json["description"]
+    puts previous.try(:description)
 
     description_changed = previous.nil? || json["description"] != previous.try(:description)
     name_changed = previous.nil? || json["name"] != previous.try(:name)

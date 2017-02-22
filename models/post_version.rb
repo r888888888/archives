@@ -26,11 +26,6 @@ class PostVersion < ActiveRecord::Base
     previous = find_previous(json["post_id"], updated_at)
     subject = PostVersion.new
 
-    if previous && previous.updater_id == json["updater_id"] && updated_at >= 1.hour.ago
-      subject = previous
-      previous = find_previous(json["post_id"], previous.updated_at)
-    end
-
     if previous
       added_tags = tags - previous.tag_array
       removed_tags = previous.tag_array - tags
