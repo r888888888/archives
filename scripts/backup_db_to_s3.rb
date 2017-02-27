@@ -20,7 +20,7 @@ S3 = Aws::S3::Client.new
 ## upload postgresql
 bucket = "danbooru-archives-backup"
 
-current_backups = S3.list_objects(bucket: bucket).contents.map {|x| x.key}.select {|x| x =~ /^db-/}.sort.reverse
+current_backups = S3.list_objects(bucket: bucket).contents.map {|x| x.key}.select {|x| x =~ /^archive/}.sort.reverse
 
 if current_backups.size > MAX_BACKUPS
   current_backups[MAX_BACKUPS..-1].each do |old_backup|
