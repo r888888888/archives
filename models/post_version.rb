@@ -12,11 +12,11 @@ class PostVersion < ActiveRecord::Base
   )
 
   def self.find_previous(post_id, updated_at)
-    where("post_id = ? and updated_at <= ?", post_id, updated_at).order("updated_at desc, id desc").first
+    where("post_id = ? and updated_at < ?", post_id, updated_at).order("updated_at desc, id desc").first
   end
 
   def self.calculate_version(post_id, updated_at)
-    1 + where("post_id = ? and updated_at <= ?", post_id, updated_at).count
+    1 + where("post_id = ? and updated_at < ?", post_id, updated_at).count
   end
 
   def self.create_from_json(json)
