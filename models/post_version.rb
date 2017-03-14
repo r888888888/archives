@@ -25,6 +25,12 @@ class PostVersion < ActiveRecord::Base
     tags = json["tags"].scan(/\S+/)
     previous = find_previous(json["post_id"], updated_at)
     subject = PostVersion.new
+    subject.version = calculate_version(json["post_id"], updated_at)
+
+    if previous && previous.updater_id == json["updater_id"] && previous.updated_at >= 1.hour.ago
+      subject = previous
+      previous = find_previous(previous.pool_id, previous.updated_at)
+    end
 
     if previous
       added_tags = tags - previous.tag_array
@@ -45,7 +51,6 @@ class PostVersion < ActiveRecord::Base
       updater_id: json["updater_id"],
       updater_ip_addr: json["updater_ip_addr"],
       updated_at: updated_at,
-      version: calculate_version(json["post_id"], updated_at),
       rating: json["rating"],
       rating_changed: rating_changed,
       parent_id: json["parent_id"],
