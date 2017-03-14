@@ -29,7 +29,7 @@ class PostVersion < ActiveRecord::Base
 
     if previous && previous.updater_id == json["updater_id"] && previous.updated_at >= 1.hour.ago
       subject = previous
-      previous = find_previous(previous.pool_id, previous.updated_at)
+      previous = find_previous(previous.post_id, previous.updated_at)
     end
 
     if previous
