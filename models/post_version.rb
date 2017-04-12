@@ -16,7 +16,7 @@ class PostVersion < ActiveRecord::Base
   end
 
   def self.calculate_version(post_id, updated_at)
-    1 + where("post_id = ? and updated_at < ?", post_id, updated_at).count
+    1 + where("post_id = ?", post_id).maximum(:version).to_i
   end
 
   def self.create_from_json(json)
