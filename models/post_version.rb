@@ -27,7 +27,7 @@ class PostVersion < ActiveRecord::Base
     subject = PostVersion.new
     subject.version = calculate_version(json["post_id"], updated_at)
 
-    if previous && previous.updater_id == json["updater_id"] && previous.updated_at >= 1.hour.ago
+    if previous && previous.updater_id == json["updater_id"] && updated_at - previous.updated_at < 1.hour
       subject = previous
       previous = find_previous(previous.post_id, previous.updated_at)
     end

@@ -27,7 +27,7 @@ class PoolVersion < ActiveRecord::Base
     subject = PoolVersion.new
     subject.version = calculate_version(json["pool_id"], updated_at)
 
-    if previous && previous.updater_id == json["updater_id"] && previous.updated_at >= 1.hour.ago
+    if previous && previous.updater_id == json["updater_id"] && updated_at - previous.updated_at < 1.hour
       subject = previous
       previous = find_previous(previous.pool_id, previous.updated_at)
     end
