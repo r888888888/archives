@@ -12,7 +12,7 @@ require "pool_version"
 require "post_version"
 
 unless ENV["RUN"]
-  Process.daemon
+  Process.daemon(nil, true)
 end
 
 $running = true
