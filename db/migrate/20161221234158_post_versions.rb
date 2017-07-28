@@ -1,6 +1,7 @@
 class PostVersions < ActiveRecord::Migration[5.0]
   def change
 	  create_table "post_versions", :force => true do |t|
+	  	t.integer  "booru_id", :null => false
 	    t.integer  "post_id", :null => false
 	    t.text     "tags", :null => false
 	    t.text     "added_tags", :null => false, :array => true, :default => []
@@ -17,9 +18,9 @@ class PostVersions < ActiveRecord::Migration[5.0]
 	    t.integer  "version", :null => false, :default => 1
 	  end
 
-	  add_index "post_versions", ["post_id"]
-	  add_index "post_versions", ["updated_at"]
-	  add_index "post_versions", ["updater_id"]
-	  add_index "post_versions", ["updater_ip_addr"]
+	  add_index "post_versions", ["booru_id", "post_id"]
+	  add_index "post_versions", ["booru_id", "updated_at"]
+	  add_index "post_versions", ["booru_id", "updater_id"]
+	  add_index "post_versions", ["booru_id", "updater_ip_addr"]
   end
 end

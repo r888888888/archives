@@ -1,6 +1,7 @@
 class PoolVersions < ActiveRecord::Migration[5.0]
 	def up
 	  create_table "pool_versions", :force => true do |t|
+	    t.integer  "booru_id", :null => false
 	    t.integer  "pool_id", :null => false
 	    t.integer  "post_ids", :array => true, :default => [], :null => false
 	    t.integer  "added_post_ids", :array => true, :default => [], :null => false
@@ -19,9 +20,9 @@ class PoolVersions < ActiveRecord::Migration[5.0]
 	    t.string   "category"
 	  end
 
-	  add_index "pool_versions", ["pool_id"], :name => "index_pool_versions_on_pool_id"
-	  add_index "pool_versions", ["updater_id"], :name => "index_pool_versions_on_updater_id"
-	  add_index "pool_versions", ["updater_ip_addr"], :name => "index_pool_versions_on_updater_ip_addr"
+	  add_index "pool_versions", ["booru_id", "pool_id"], :name => "index_pool_versions_on_pool_id"
+	  add_index "pool_versions", ["booru_id", "updater_id"], :name => "index_pool_versions_on_updater_id"
+	  add_index "pool_versions", ["booru_id", "updater_ip_addr"], :name => "index_pool_versions_on_updater_ip_addr"
 	end
 
 	def down

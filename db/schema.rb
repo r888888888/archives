@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20170119015012) do
   enable_extension "plpgsql"
 
   create_table "pool_versions", force: :cascade do |t|
+    t.integer  "booru_id",                            null: false
     t.integer  "pool_id",                             null: false
     t.integer  "post_ids",            default: [],    null: false, array: true
     t.integer  "added_post_ids",      default: [],    null: false, array: true
@@ -33,12 +34,13 @@ ActiveRecord::Schema.define(version: 20170119015012) do
     t.boolean  "boolean",             default: false, null: false
     t.boolean  "is_deleted",          default: false, null: false
     t.string   "category"
-    t.index ["pool_id"], name: "index_pool_versions_on_pool_id", using: :btree
-    t.index ["updater_id"], name: "index_pool_versions_on_updater_id", using: :btree
-    t.index ["updater_ip_addr"], name: "index_pool_versions_on_updater_ip_addr", using: :btree
+    t.index ["booru_id", "pool_id"], name: "index_pool_versions_on_pool_id", using: :btree
+    t.index ["booru_id", "updater_id"], name: "index_pool_versions_on_updater_id", using: :btree
+    t.index ["booru_id", "updater_ip_addr"], name: "index_pool_versions_on_updater_ip_addr", using: :btree
   end
 
   create_table "post_versions", force: :cascade do |t|
+    t.integer  "booru_id",                                  null: false
     t.integer  "post_id",                                   null: false
     t.text     "tags",                                      null: false
     t.text     "added_tags",                default: [],    null: false, array: true
@@ -53,10 +55,10 @@ ActiveRecord::Schema.define(version: 20170119015012) do
     t.text     "source"
     t.boolean  "source_changed",            default: false, null: false
     t.integer  "version",                   default: 1,     null: false
-    t.index ["post_id"], name: "index_post_versions_on_post_id", using: :btree
-    t.index ["updated_at"], name: "index_post_versions_on_updated_at", using: :btree
-    t.index ["updater_id"], name: "index_post_versions_on_updater_id", using: :btree
-    t.index ["updater_ip_addr"], name: "index_post_versions_on_updater_ip_addr", using: :btree
+    t.index ["booru_id", "post_id"], name: "index_post_versions_on_booru_id_and_post_id", using: :btree
+    t.index ["booru_id", "updated_at"], name: "index_post_versions_on_booru_id_and_updated_at", using: :btree
+    t.index ["booru_id", "updater_id"], name: "index_post_versions_on_booru_id_and_updater_id", using: :btree
+    t.index ["booru_id", "updater_ip_addr"], name: "index_post_versions_on_booru_id_and_updater_ip_addr", using: :btree
   end
 
 end
