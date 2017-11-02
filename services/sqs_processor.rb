@@ -3,7 +3,7 @@
 $:.unshift(File.expand_path("../../models", __FILE__))
 
 require "dotenv"
-Dotenv.load
+Dotenv.load ".env", "/run/secrets/archives_env"
 
 require "logger"
 require "aws-sdk"

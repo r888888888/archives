@@ -1,10 +1,6 @@
 FROM ruby:2.4.2-slim-stretch
 
-# this builds the danbooru docker container. note that this is only
-# for the web process; you will need to run a docker image for postgres,
-# memcached, and the delayed job workers separately.
-
-LABEL web=true
+LABEL archives=true
 RUN apt-get update
 RUN apt-get -y install apt-utils build-essential automake libssl-dev libxml2-dev libxslt-dev ncurses-dev sudo libreadline-dev memcached libmemcached-dev git curl libcurl4-openssl-dev sendmail-bin sendmail postgresql-client libpq-dev nginx ssh coreutils emacs24-nox telnet
 RUN useradd -ms /bin/bash danbooru -u 1000

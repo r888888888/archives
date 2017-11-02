@@ -1,5 +1,5 @@
 require 'dotenv'
-Dotenv.load
+Dotenv.load ".env", "/run/secrets/archives_env"
 
 require 'standalone_migrations'
 StandaloneMigrations::Tasks.load_tasks
