@@ -1,7 +1,7 @@
 class PoolVersions < ActiveRecord::Migration[5.0]
 	def up
 	  create_table "pool_versions", :force => true do |t|
-	    t.integer  "booru_id", :null => false
+	    t.integer  "booru_id"
 	    t.integer  "pool_id", :null => false
 	    t.integer  "post_ids", :array => true, :default => [], :null => false
 	    t.integer  "added_post_ids", :array => true, :default => [], :null => false

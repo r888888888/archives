@@ -1,7 +1,7 @@
 class PostVersions < ActiveRecord::Migration[5.0]
   def change
 	  create_table "post_versions", :force => true do |t|
-	  	t.integer  "booru_id", :null => false
+	  	t.integer  "booru_id"
 	    t.integer  "post_id", :null => false
 	    t.text     "tags", :null => false
 	    t.text     "added_tags", :null => false, :array => true, :default => []
