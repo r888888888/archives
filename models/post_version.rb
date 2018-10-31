@@ -12,7 +12,7 @@ class PostVersion < ActiveRecord::Base
   )
 
   def self.find_previous(post_id, updated_at)
-    where("post_id = ? and updated_at < ?", post_id, updated_at).order("updated_at desc, id desc").first
+    where("post_id = ? and updated_at < ?", post_id, updated_at).order("id desc").first
   end
 
   def self.calculate_version(post_id, updated_at)

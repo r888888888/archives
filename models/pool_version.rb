@@ -12,7 +12,7 @@ class PoolVersion < ActiveRecord::Base
   )
 
   def self.find_previous(pool_id, updated_at)
-    PoolVersion.where(pool_id: pool_id).where("updated_at < ?", updated_at).order("updated_at desc").first
+    PoolVersion.where(pool_id: pool_id).where("updated_at < ?", updated_at).order("id desc").first
   end
 
   def self.calculate_version(pool_id, updated_at)
