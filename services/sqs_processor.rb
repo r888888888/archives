@@ -1,5 +1,24 @@
 #!/usr/bin/env ruby
 
+=begin
+# sample systemd config
+
+[Unit]
+Description=Archives SQS Processor
+
+[Service]
+Type=simple
+User=archiver
+Restart=always
+WorkingDirectory=/var/www/archives/current
+ExecStart=/bin/bash -lc 'bundle exec ruby services/sqs_processor.rb'
+TimeoutSec=30
+RestartSec=15s
+
+[Install]
+WantedBy=multi-user.target
+=end
+
 $:.unshift(File.expand_path("../../models", __FILE__))
 
 require "dotenv"
@@ -11,21 +30,12 @@ require "optparse"
 require "pool_version"
 require "post_version"
 
-unless ENV["RUN"]
-  #Process.daemon(nil, true)
-end
-
 $running = true
 $options = {
-  pidfile: "/var/run/archives/sqs_processor.pid",
   logfile: "/var/log/archives/sqs_processor.log"
 }
 
 OptionParser.new do |opts|
-  opts.on("--pidfile=PIDFILE") do |pidfile|
-    $options[:pidfile] = pidfile
-  end
-
   opts.on("--logfile=LOGFILE") do |logfile|
     $options[:logfile] = logfile
   end
@@ -43,12 +53,6 @@ Aws.config.update(
 )
 SQS = Aws::SQS::Client.new
 QUEUE = Aws::SQS::QueuePoller.new(ENV["SQS_ARCHIVES_URL"], client: SQS)
-
-unless ENV["RUN"]
-  File.open($options[:pidfile], "w") do |f|
-    f.write(Process.pid)
-  end
-end
 
 Signal.trap("TERM") do
   $running = false
